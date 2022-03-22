@@ -5,12 +5,20 @@ const Usuario = require('../models/usuario');
 const { generarJWT } = require('../helpers/jwt');
 
 const getUsuarios = async (req, res) => {
-  const usuarios = await Usuario.find();
+  const desde = Number(req.query.desde) || 0;
+  
+  const [usuarios, total] = await Promise.all([
+    Usuario.find()
+           .skip(desde)
+           .limit(5),
+    Usuario.count()
+  ]);
 
   res.json({
     ok: true,
-    message: 'Usuarios encontrados',
-    usuarios
+    message: 'Lista de usuarios',
+    usuarios,
+    total
   });
 }
 

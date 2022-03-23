@@ -13,10 +13,14 @@ const router = Router();
 router.get('/', getHospitales);
 router.post('/', [
   validarJWT,
-  check('nombre', 'El nombre del hospital es obligatorio'),
+  check('nombre', 'El nombre del hospital es obligatorio').not().isEmpty(),
   validarCampos
 ], crearHospitales);
-router.put('/:id', [ ], actualizarHospitales);
-router.delete('/:id', borrarHospitales);
+router.put('/:id', [
+  validarJWT,
+  check('nombre', 'El nombre del hospital es obligatorio').not().isEmpty(),
+  validarCampos
+], actualizarHospitales);
+router.delete('/:id', validarJWT, borrarHospitales);
 
 module.exports = router;

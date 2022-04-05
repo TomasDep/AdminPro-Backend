@@ -3,7 +3,6 @@ const { response } = require('express');
 const Medico = require('../models/medico');
 
 const getMedicos = async (req, res = response) => {
-  
   const medicos = await Medico.find()
                               .populate('usuario', 'nombre')
                               .populate('hospital', 'nombre')
@@ -12,7 +11,29 @@ const getMedicos = async (req, res = response) => {
     ok: true,
     message: 'Lista de medicos',
     medicos
-  }) 
+  });
+}
+
+const getMedicoPorId = async (req, res = response) => {
+  const _id  = req.params.id;
+
+  try {
+    const medico = await Medico.findById(_id)
+                                .populate('usuario', 'nombre img')
+                                .populate('hospital', 'nombre img')
+    
+    res.json({
+      ok: true,
+      message: 'Medicos encontrado',
+      medico
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({
+      ok: false,
+      message: 'Error inesperado... revisar logs',
+    });
+  }
 }
 
 const crearMedicos = async (req, res = response) => {
@@ -20,14 +41,13 @@ const crearMedicos = async (req, res = response) => {
   const medico = new Medico({ usuario: uid, ...req.body });
 
   try {
-    
     const medicoDB = await medico.save();
 
     res.json({
       ok: true,
       message: 'Medico creado',
       medico: medicoDB
-    }) 
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -62,7 +82,7 @@ const actualizarMedicos = async (req, res = response) => {
       ok: true,
       message: 'Medico actualizado',
       medico: medicoActualizado
-    }) ;
+    });
   } catch (error) {
     console.log(error);
     res.json({
@@ -103,6 +123,7 @@ const borrarMedicos = async (req, res = response) => {
 
 module.exports = {
   getMedicos,
+  getMedicoPorId,
   crearMedicos,
   actualizarMedicos,
   borrarMedicos

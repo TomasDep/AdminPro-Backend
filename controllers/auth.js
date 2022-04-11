@@ -10,13 +10,12 @@ const login = async (req, res = response) => {
   const { email, password } = req.body;
 
   try {
-    // Verificar email
     const usuarioDB = await Usuario.findOne({ email });
     if (!usuarioDB) {
       return res.status(404).json({
         ok: false,
         message: 'Las credenciales no son validas'
-      })
+      });
     }
 
     // Verificar Contraseña
@@ -25,7 +24,7 @@ const login = async (req, res = response) => {
       return res.status(400).json({
         ok: false,
         message: 'Las credenciales no son validas'
-      })
+      });
     }
 
     // Generar JWT

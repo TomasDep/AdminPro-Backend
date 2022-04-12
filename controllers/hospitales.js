@@ -3,14 +3,21 @@ const { response } = require('express');
 const Hospital = require('../models/hospital');
 
 const getHospitales = async (req, res = response) => {
+  const desde = Number(req.query.desde) || 0;  
 
-  const hospitales = await Hospital.find()
-                                   .populate('usuario', 'nombre');
+  const [hospitales, total] = await Promise.all([
+    Hospital.find()
+            .populate('usuario', 'nombre')
+            .skip(desde)
+            .limit(5),
+    Hospital.count()
+  ]);
 
   res.json({
     ok: true,
     message: 'Lista de hospitales',
-    hospitales
+    hospitales,
+    total
   });
 }
 

@@ -3,14 +3,22 @@ const { response } = require('express');
 const Medico = require('../models/medico');
 
 const getMedicos = async (req, res = response) => {
-  const medicos = await Medico.find()
-                              .populate('usuario', 'nombre')
-                              .populate('hospital', 'nombre')
+  const desde = Number(req.query.desde) || 0;
+
+  const [medicos, total] = await Promise.all([
+    Medico.find()
+          .populate('usuario', 'nombre')
+          .populate('hospital', 'nombre')
+          .skip(desde)
+          .limit(5),
+    Medico.count()
+  ]);
 
   res.json({
     ok: true,
     message: 'Lista de medicos',
-    medicos
+    medicos,
+    total
   });
 }
 

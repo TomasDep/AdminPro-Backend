@@ -58,7 +58,7 @@ const crearUsuario = async (req, res = response) => {
     res.status(500).json({
       ok: false,
       message: 'Error inesperado... revisar los logs'
-    })
+    });
   }
 }
 
@@ -131,7 +131,7 @@ const borrarUsuario = async (req, res = response) => {
     res.json({
       ok: true,
       message: 'Usuario eliminado'
-    })
+    });
   } catch(error) {
     console.log(error);
     res.status(500).json({

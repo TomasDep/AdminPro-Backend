@@ -22,6 +22,16 @@ const getUsuarios = async (req, res) => {
   });
 }
 
+const getTotalUsuarios = async (req, res) => {
+  const usuarios = await Usuario.find().count();
+
+  res.json({
+    ok: true,
+    message: 'Total de usuarios',
+    usuarios
+  });
+}
+
 const crearUsuario = async (req, res = response) => {
   const { email, password } = req.body;
 
@@ -143,6 +153,7 @@ const borrarUsuario = async (req, res = response) => {
 
 module.exports = {
   getUsuarios,
+  getTotalUsuarios,
   crearUsuario,
   actualizarUsuario,
   borrarUsuario

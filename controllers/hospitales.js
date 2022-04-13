@@ -21,6 +21,16 @@ const getHospitales = async (req, res = response) => {
   });
 }
 
+const getTotalHospitales = async (req, res) => {
+  const hospitales = await Hospital.find().count();
+
+  res.json({
+    ok: true,
+    message: 'Total de hospitales',
+    hospitales
+  });
+}
+
 const crearHospitales = async (req, res = response) => {
   const uid = req.uid;
   const hospital = new Hospital({ usuario: uid, ...req.body });
@@ -108,6 +118,7 @@ const borrarHospitales = async (req, res = response) => {
 
 module.exports = {
   getHospitales,
+  getTotalHospitales,
   crearHospitales,
   actualizarHospitales,
   borrarHospitales

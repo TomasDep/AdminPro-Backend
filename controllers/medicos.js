@@ -22,6 +22,16 @@ const getMedicos = async (req, res = response) => {
   });
 }
 
+const getTotalMedicos = async (req, res) => {
+  const medicos = await Medico.find().count();
+
+  res.json({
+    ok: true,
+    message: 'Total de medicos',
+    medicos
+  });
+}
+
 const getMedicoPorId = async (req, res = response) => {
   const _id  = req.params.id;
 
@@ -131,6 +141,7 @@ const borrarMedicos = async (req, res = response) => {
 
 module.exports = {
   getMedicos,
+  getTotalMedicos,
   getMedicoPorId,
   crearMedicos,
   actualizarMedicos,
